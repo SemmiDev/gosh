@@ -5,17 +5,18 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "My Program",
-  "description": "My Program Description"
+  "name": "Belajar Go",
+  "description": "Belajar Go sangat menyenangkan dan mudah"
 }
 
 ### DETAILS
 
-GET http://localhost:3000/api/program/2900
+GET http://localhost:3000/api/program/100
 Accept: application/json
 
 
 ### SEARCH
 
-GET http://localhost:3000/api/program?q=Capital%20Group
+GET http://localhost:3000/api/program?q=belajar
 Accept: application/json
+Cache-Control: no-cache

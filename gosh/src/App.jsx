@@ -7,11 +7,9 @@ function App() {
     const [inputValue, setInputValue] = useState('');
     const [data, setData] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
-    const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
         socket.onopen = () => {
-            console.log('Connected');
             setMessage('Connected');
         };
 
@@ -21,7 +19,6 @@ function App() {
         };
 
         socket.onclose = () => {
-            console.log('Disconnected');
             setMessage('Disconnected');
         };
 
@@ -36,23 +33,6 @@ function App() {
         }
         return () => {};
     }, [inputValue]);
-
-    const handleClick = useCallback(
-        (e) => {
-            e.preventDefault();
-
-            try {
-                socket.send(
-                    JSON.stringify({
-                        message: inputValue,
-                    })
-                );
-            } catch (err) {
-                console.error(err);
-            }
-        },
-        [inputValue]
-    );
 
     const handleChange = useCallback((e) => {
         setInputValue(e.target.value);
@@ -70,7 +50,7 @@ function App() {
     const highlightKeyword = (text, keyword) => {
         if (keyword === '') return text;
         const regex = new RegExp(`(${keyword})`, 'gi');
-        return text.replace(regex, '<span class="bg-yellow-500">$1</span>');
+        return text.replace(regex, '<span class="bg-sky-300">$1</span>');
     };
 
     return (
@@ -88,29 +68,25 @@ function App() {
 
                 <div className='absolute right-0 top-0 mt-3 mr-3'>
                     <button className='text-gray-600 hover:text-gray-700 focus:outline-none'>
-                        <svg
-                            className='w-5 h-5'
-                            fill='none'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                        >
-                            <path d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
-                        </svg>
+                        <span>
+                            Terdapat{' '}
+                            <span className='text-yellow-500'>
+                                {data && data.length}
+                            </span>{' '}
+                            hasil pencarian
+                        </span>
                     </button>
                 </div>
 
                 {showPopup && (
                     <div className='bg-white mt-2 rounded-lg shadow-lg absolute z-10 w-full max-h-80 overflow-y-auto'>
                         <ul className='list-reset'>
-                            {data.length != 0 &&
+                            {data &&
                                 data.map((item, index) => (
                                     <li key={index}>
                                         <a
                                             href='#'
-                                            className='block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white'
+                                            className='block group px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white'
                                         >
                                             <div
                                                 dangerouslySetInnerHTML={{
@@ -120,6 +96,10 @@ function App() {
                                                     ),
                                                 }}
                                             />
+
+                                            <span className='text-xs hidden  group-hover:flex'>
+                                                {item.description}
+                                            </span>
                                         </a>
                                     </li>
                                 ))}
