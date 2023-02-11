@@ -1,0 +1,21 @@
+### CREATE
+
+POST http://localhost:3000/api/program
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "My Program",
+  "description": "My Program Description"
+}
+
+### DETAILS
+
+GET http://localhost:3000/api/program/2900
+Accept: application/json
+
+
+### SEARCH
+
+GET http://localhost:3000/api/program?q=Capital%20Group
+Accept: application/json
